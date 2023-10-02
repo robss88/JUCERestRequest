@@ -53,7 +53,24 @@ public:
 
         return response;
     }
+    
+    RestRequest::Response execute (const var& bodyVar)
+    {
+        auto urlRequest = url.getChildURL (endpoint);
+        
+        String jsonBody = JSON::toString(bodyVar, false);
+        urlRequest = urlRequest.withPOSTData(jsonBody);
 
+        std::unique_ptr<InputStream> input (urlRequest.createInputStream (true, nullptr, nullptr, stringPairArrayToHeaderString(headers), 0, &response.headers, &response.status, 5, verb));
+
+        response.result = checkInputStream (input);
+        if (response.result.failed()) return response;
+
+        response.bodyAsString = input->readEntireStreamAsString();
+        response.result = JSON::parse(response.bodyAsString, response.body);
+
+        return response;
+    }
 
     RestRequest get (const String& endpoint)
     {
