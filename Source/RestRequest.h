@@ -131,6 +131,9 @@ public:
         return bodyAsString;
     }
 
+    void clearFields() {
+        fields.clear();
+    }
 private:
     URL url;
     StringPairArray headers;
