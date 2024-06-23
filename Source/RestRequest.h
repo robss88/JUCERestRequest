@@ -120,7 +120,11 @@ public:
         headers.set (name, value);
         return req;
     }
-
+    
+    void setURL(const String& urlString) {
+        url = URL(urlString);
+    }
+    
     const URL& getURL() const
     {
         return url;
