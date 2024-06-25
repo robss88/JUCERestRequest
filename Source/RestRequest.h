@@ -38,8 +38,9 @@ public:
         if (hasFields)
         {
             MemoryOutputStream output;
+            JSON::FormatOptions formatOptions = JSON::FormatOptions().withIndentLevel(0).withMaxDecimalPlaces(20).withSpacing(JSON::Spacing::singleLine);
 
-            fields.writeAsJSON (output, 0, false, 20);
+            fields.writeAsJSON (output, formatOptions);  // Updated to use the new API
             urlRequest = urlRequest.withPOSTData (output.toString());
         }
 
