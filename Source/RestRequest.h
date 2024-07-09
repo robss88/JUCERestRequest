@@ -41,7 +41,9 @@ public:
             JSON::FormatOptions formatOptions = JSON::FormatOptions().withIndentLevel(0).withMaxDecimalPlaces(20).withSpacing(JSON::Spacing::singleLine);
 
             fields.writeAsJSON (output, formatOptions);  // Updated to use the new API
-            urlRequest = urlRequest.withPOSTData (output.toString());
+            auto postBodyAsString = output.toString();
+            DBG(postBodyAsString);
+            urlRequest = urlRequest.withPOSTData (postBodyAsString);
         }
 
         std::unique_ptr<InputStream> input (urlRequest.createInputStream (hasFields, nullptr, nullptr, stringPairArrayToHeaderString(headers), 0, &response.headers, &response.status, 5, verb));
@@ -73,7 +75,7 @@ public:
         return response;
     }
 
-    RestRequest get (const String& endpoint)
+    RestRequest get (const String& endpoint = "")
     {
         RestRequest req (*this);
         req.verb = "GET";
